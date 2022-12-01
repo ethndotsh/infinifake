@@ -1,0 +1,27 @@
+{
+  "name": "infinifake",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/react": "^1.2.2",
+    "@astrojs/tailwind": "^2.1.2",
+    "@astrojs/vercel": "^2.3.4",
+    "@faker-js/faker": "^7.6.0",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "astro": "^1.6.10",
+    "lodash.startcase": "^4.4.0",
+    "pluralize-esm": "^9.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.2.4"
+  }
+}

@@ -1,0 +1,244 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+import { faker } from "@faker-js/faker";
+import startCase from "lodash.startcase";
+
+function capitalize(string: string) {
+  if (string.startsWith("bs")) {
+    return "BS " + startCase(string.slice(2));
+  }
+
+  if (string.startsWith("ip")) {
+    return "IP" + string.slice(2);
+  }
+
+  if (string.startsWith("http")) {
+    return "HTTP " + startCase(string.slice(4));
+  }
+
+  if (string === "imei") {
+    return "IMEI";
+  }
+
+  switch (string) {
+    case "id":
+      return "ID";
+    case "url":
+      return "URL";
+    case "vin":
+      return "VIN";
+    case "vrm":
+      return "VRM";
+    case "mac":
+      return "MAC Address";
+    case "pin":
+      return "PIN";
+    case "iban":
+      return "IBAN";
+    case "bic":
+      return "BIC";
+    case "State Abbr":
+      return "State Abbreviation";
+  }
+
+  return startCase(string);
+}
+
+const functionCategories = [
+  "name",
+  "address",
+  "date",
+  "lorem",
+  "finance",
+  "music",
+  "animal",
+  "phone",
+  "hacker",
+  "random",
+  "commerce",
+  "science",
+  "company",
+  "image",
+  "vehicle",
+  "internet",
+];
+
+const notAllowed = [
+  "faker",
+  "zipCodeByState",
+  "nearbyGPSCoordinate",
+  "between",
+  "betweens",
+  "birthdate",
+  "lorempicsum",
+  "lorempixel",
+  "unsplash",
+  "placeholder",
+  "streetPrefix",
+  "dataUri",
+  "imageUrl",
+  "email",
+  "phoneNumber",
+  "phoneFormats",
+  "phoneNumberFormat",
+];
+---
+
+<Layout title="Infinifake">
+  <main>
+    <h1
+      class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-700"
+      id="top"
+    >
+      Infinifake
+    </h1>
+    <p class="mb-4">
+      Generate fake <span class="link-gradient">ANYTHING</span>
+    </p>
+
+    <p class="instructions">
+      All data is generated randomly using <a
+        class="font-medium text-purple-500"
+        href="https://npmjs.com/package/@faker-js/faker"
+        target="_blank">this</a
+      > library. Any resemblance to real world people, companies, addresses, phone
+      numbers, etc. is in most cases purely coincedental.
+    </p>
+    <div>
+      <h2 class="text-2xl font-medium mb-2 mt-6">Categories</h2>
+      <div>
+        {
+          functionCategories.map((category, i) => {
+            if (functionCategories.length === i + 1) {
+              return (
+                <a
+                  class="mr-1 text-purple-600 inline font-medium"
+                  href={`/#${category}`}
+                >
+                  {startCase(category)}
+                </a>
+              );
+            } else {
+              return (
+                <a
+                  class="mr-1 text-purple-600 inline font-medium"
+                  href={`/#${category}`}
+                >
+                  {startCase(category)} <span class="text-gray-800">•</span>
+                </a>
+              );
+            }
+          })
+        }
+      </div>
+    </div>
+
+    {
+      functionCategories.map((category) => {
+        return (
+          <div id={category}>
+            <h3 class="text-3xl font-bold mb-2 mt-7">{startCase(category)}</h3>
+            <ul role="list" class="link-card-grid">
+              {Object.keys(faker[category]).map((functionName) => {
+                if (notAllowed.includes(functionName)) return;
+
+                // if (category === "image") {
+                //   return (
+                //     <Card
+                //       href={faker.image[functionName]}
+                //       title={startCase(functionName)}
+                //     />
+                //   );
+                // }
+
+                return (
+                  <Card
+                    href={`/fake/${category}/${functionName}`}
+                    title={capitalize(functionName)}
+                  />
+                );
+              })}
+            </ul>
+          </div>
+        );
+      })
+    }
+  </main>
+  <a
+    href="/#top"
+    class="fixed z-90 bottom-10 right-8 bg-purple-600 w-12 h-12 rounded-full drop-shadow-lg flex justify-center items-center text-white text-2xl hover:drop-shadow-2xl cursor-pointer transition-all hover:bg-purple-700"
+    >↑</a
+  >
+
+  <footer class="w-full text-center text-gray-600 text-sm mb-4 mt-6">
+    <hr />
+    <p class="mt-4">
+      &copy; {new Date().getFullYear()}
+      <a class="font-medium" href="https://cursecode.me">curse</a>
+    </p>
+  </footer>
+</Layout>
+
+<style>
+  .link-gradient {
+    font-weight: 500;
+    background: linear-gradient(
+        to right,
+        rgba(100, 200, 200, 1),
+        rgba(100, 200, 200, 1)
+      ),
+      linear-gradient(to right, rgba(139, 92, 246, 1), rgb(111, 3, 147));
+    background-size: 100% 0.1em, 0 0.1em;
+    background-position: 100% 100%, 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 200ms;
+  }
+
+  .link-gradient:hover,
+  .link-gradient:focus {
+    background-size: 0 0.1em, 100% 0.1em;
+  }
+  main {
+    margin: auto;
+    padding: 1.5rem;
+    max-width: 70ch;
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+  }
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+  .instructions {
+    line-height: 1.6;
+    margin: 1rem 0;
+    border: 1px solid rgba(var(--accent), 25%);
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.4rem;
+  }
+  .instructions code {
+    font-size: 0.875em;
+    font-weight: bold;
+    background: rgba(var(--accent), 12%);
+    color: rgb(var(--accent));
+    border-radius: 4px;
+    padding: 0.3em 0.45em;
+  }
+  .instructions strong {
+    color: rgb(var(--accent));
+  }
+  .link-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    gap: 1rem;
+    padding: 0;
+  }
+</style>

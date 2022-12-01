@@ -1,0 +1,164 @@
+---
+import { faker } from "@faker-js/faker";
+import { AstroComponent } from "astro/dist/runtime/server/render/astro";
+import startCase from "lodash.startcase";
+import pluralize from "pluralize-esm";
+import Layout from "../../../layouts/Layout.astro";
+
+function capitalize(string: string) {
+  if (string.startsWith("bs")) {
+    return "BS " + startCase(string.slice(2));
+  }
+
+  if (string.startsWith("ip")) {
+    return "IP" + string.slice(2);
+  }
+
+  if (string.startsWith("http")) {
+    return "HTTP " + startCase(string.slice(4));
+  }
+
+  if (string === "imei") {
+    return "IMEI";
+  }
+
+  switch (string) {
+    case "id":
+      return "ID";
+    case "url":
+      return "URL";
+    case "vin":
+      return "VIN";
+    case "vrm":
+      return "VRM";
+    case "mac":
+      return "MAC Address";
+    case "pin":
+      return "PIN";
+    case "iban":
+      return "IBAN";
+    case "bic":
+      return "BIC";
+    case "State Abbr":
+      return "State Abbreviation";
+  }
+
+  return startCase(string);
+}
+
+const paragraphs = [
+  "paragraph",
+  "lines",
+  "paragraphs",
+  "sentence",
+  "ethereumAddress",
+  "litecoinAddress",
+  "bitcoinAddress",
+  "transactionDescription",
+  "phrase",
+  "text",
+  "productDescription",
+  "userAgent",
+];
+
+const { func, type }: any = Astro.params;
+
+let result = faker[type][func]();
+
+const title = capitalize(func);
+const category = pluralize(type);
+---
+
+<Layout title={title}>
+  <main class="text-center">
+    <div>
+      <div class="w-full flex justify-center">
+        <a href={`/#${type}`}>← Back</a>
+      </div>
+
+      <h1 class="text-transparent bg-clip-text bg-purple-700 mt-2">
+        Infinifake
+      </h1>
+      <p>{startCase(category)}</p>
+      <h2 class="mr-2">
+        Random {title}
+      </h2>
+      <a
+        class="rounded-full bg-purple-600 text-white px-3 py-1 text-sm cursor-pointer hidden sm:inline-block mt-1 w-20 text-center"
+        href={Astro.url}>Refresh</a
+      >
+      <div class="w-full flex justify-center items-center">
+        {
+          type === "image" ? (
+            <div>
+              <img class="mt-10 h-64 mx-auto" src={result} />
+              <p class="mt-2 font-mono text-xs">{result}</p>
+            </div>
+          ) : func === "avatar" ? (
+            <div>
+              <img class="mt-4 h-32 mx-auto rounded-full" src={result} />
+              <p class="mt-4 font-mono text-xs">{result}</p>
+            </div>
+          ) : paragraphs.includes(func) ? (
+            <p class=" px-10 py-4 mt-10 md:mt-20 rounded-lg border bg-white">
+              {result}
+            </p>
+          ) : (
+            <p class="text-6xl px-10 py-8 mt-10 md:mt-20 rounded-lg border bg-white font-bold">
+              {result}
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </main>
+  <a
+    href={Astro.url}
+    class="sm:hidden fixed z-90 bottom-10 right-8 bg-purple-600 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:drop-shadow-2xl cursor-pointer transition-all hover:bg-purple-700"
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="feather feather-refresh-cw"
+      ><polyline points="23 4 23 10 17 10"></polyline><polyline
+        points="1 20 1 14 7 14"></polyline><path
+        d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+      ></path>
+    </svg>
+  </a>
+  <footer
+    class="absolute bottom-0 left-0 w-full text-center text-gray-600 text-sm mb-4 mt-6"
+  >
+    <p class="mt-4">
+      &copy; {new Date().getFullYear()}
+      <a class="font-medium" href="https://cursecode.me">curse</a>
+    </p>
+  </footer>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1.5rem;
+    max-width: 60ch;
+  }
+  h2 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+  }
+</style>
